@@ -1,4 +1,4 @@
-const PENGU_WATER_VERSION = "0.1.2";
+const PENGU_WATER_VERSION = "0.1.3";
 
 const T = {
   en: {
@@ -603,8 +603,6 @@ function styles() {
     .salt-shell{fill:#fff;stroke:#9ca3af;stroke-width:3}
     .salt-fill{fill:url(#saltPattern);opacity:.95}
     .level-water{fill:#bfdbfe;opacity:.45}
-    .small-text{font-size:18px;fill:#475569;font-weight:650}
-    .micro-text{font-size:13px;fill:#64748b;font-weight:650}
     .status-ring-bg{fill:none;stroke:#e2e8f0;stroke-width:10}
     .status-ring{fill:none;stroke:#3b82f6;stroke-width:10;stroke-linecap:round;transform:rotate(-90deg);transform-origin:750px 446px}
     .style-technical .canvas{background:transparent;border:1px solid rgba(148,163,184,.28);border-radius:10px}
@@ -668,8 +666,6 @@ function diagramSvg(hass, config, lang) {
     <rect class="level-water" x="162" y="536" width="270" height="48" rx="10" clip-path="url(#saltClip)"/>
     ${pct === null ? "" : `<rect class="salt-fill" x="162" y="${saltY.toFixed(1)}" width="270" height="${saltH.toFixed(1)}" clip-path="url(#saltClip)"/>`}
     <path class="salt-fill-stream" d="M205 430 V476" stroke="#60a5fa" stroke-width="8" stroke-linecap="round" opacity="0"/>
-    <text x="178" y="474" class="micro-text">${esc(tr(lang,"label_salt_level"))}</text>
-    ${pct === null ? "" : `<text x="178" y="503" class="small-text">${esc(new Intl.NumberFormat(lang === "de" ? "de-DE" : "en-US",{maximumFractionDigits:0}).format(pct))}%</text>`}
 
     <g transform="translate(750 446)">
       <circle class="status-ring-bg" cx="0" cy="0" r="48"/>
@@ -677,7 +673,6 @@ function diagramSvg(hass, config, lang) {
       <circle cx="0" cy="0" r="34" fill="${regenActive ? "#e0f2fe" : "#f1f5f9"}" stroke="${regenActive ? "#38bdf8" : "#cbd5e1"}" stroke-width="2"/>
       <path d="M-14 -4 A18 18 0 1 1 -2 17" fill="none" stroke="${regenActive ? "#0284c7" : "#64748b"}" stroke-width="5" stroke-linecap="round"/><path d="M-15 -14 V-3 H-4" fill="none" stroke="${regenActive ? "#0284c7" : "#64748b"}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
     </g>
-    <text x="650" y="520" class="micro-text">${esc(localizedRegenStep(lang, step, rawStep))}</text>
   </svg>`;
 }
 

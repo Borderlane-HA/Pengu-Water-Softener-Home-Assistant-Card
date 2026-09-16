@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3
+
+- Removed the fixed **Salt level** text from the water-softener schematic.
+- Removed the fixed salt percentage text from the tank; the fill level remains visualized graphically and can be shown as a movable value instead.
+- Removed the fixed **No regeneration / regeneration step** text below the regeneration icon.
+- Salt level and regeneration state are now shown only when configured as normal movable card values, avoiding duplicate labels in the diagram.
+
 ## 0.1.2
 
 - Added three value display modes: **Floating text**, **Compact badge**, and **Card**.

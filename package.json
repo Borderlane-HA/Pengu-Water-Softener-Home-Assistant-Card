@@ -1,0 +1,17 @@
+{
+  "name": "pengu-water-softener-card",
+  "version": "0.1.0",
+  "description": "A visual Home Assistant card for water softeners with flow, hardness, salt level, capacity and regeneration state.",
+  "license": "MIT",
+  "keywords": [
+    "home-assistant",
+    "hacs",
+    "lovelace",
+    "custom-card",
+    "water-softener",
+    "softener",
+    "gruenbeck",
+    "softliq",
+    "water"
+  ]
+}

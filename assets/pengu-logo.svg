@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 250" role="img" aria-label="Pengu Heat Card">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#ef4444"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1000" height="250" rx="34" fill="url(#bg)"/>
+
+  <g transform="translate(30 24)">
+    <rect x="0" y="0" width="196" height="196" rx="30" fill="#ffffff" stroke="#dbeafe" stroke-width="2"/>
+
+    <ellipse cx="92" cy="118" rx="50" ry="57" fill="#0f172a"/>
+    <ellipse cx="92" cy="129" rx="35" ry="42" fill="#f8fafc"/>
+    <ellipse cx="77" cy="113" rx="6.5" ry="9" fill="#0f172a"/>
+    <ellipse cx="107" cy="113" rx="6.5" ry="9" fill="#0f172a"/>
+    <polygon points="92,124 112,135 92,145 72,135" fill="#f59e0b"/>
+
+    <path d="M129 49c0-20 16-36 36-36s36 16 36 36v60c0 20-16 36-36 36s-36-16-36-36z"
+          fill="#dbeafe" stroke="#93c5fd" stroke-width="5"/>
+    <rect x="160" y="34" width="9" height="77" rx="4.5" fill="url(#accent)"/>
+    <circle cx="164.5" cy="121" r="16" fill="#ef4444"/>
+
+    <path d="M29 170c22-25 43-25 66 0" fill="none" stroke="#2563eb" stroke-width="9" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(270 58)">
+    <text x="0" y="46" font-size="48" font-family="Inter, Arial, sans-serif" font-weight="800" fill="#0f172a">Pengu Heat Card</text>
+    <text x="0" y="91" font-size="23" font-family="Inter, Arial, sans-serif" fill="#475569">Solar thermal · Heat source · Domestic hot water</text>
+    <text x="0" y="133" font-size="19" font-family="Inter, Arial, sans-serif" fill="#64748b">Full GUI editor · HACS · Clickable entities · Drag &amp; drop labels</text>
+  </g>
+</svg>

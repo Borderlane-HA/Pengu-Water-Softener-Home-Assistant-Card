@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#f8fbfe"/><stop offset="1" stop-color="#eef5fa"/></linearGradient>
+    <linearGradient id="water" x2="1"><stop stop-color="#cfe8fb"/><stop offset="1" stop-color="#2c9bd7"/></linearGradient>
+  </defs>
+  <rect width="1280" height="720" rx="24" fill="url(#bg)"/>
+  <text x="54" y="72" font-family="Arial,sans-serif" font-weight="700" font-size="34" fill="#334155">PenguWaterSoftener</text>
+  <path d="M0 145 H360 C390 145 400 165 425 165 H555 C580 165 590 145 620 145 H1280" fill="none" stroke="#b8c9d8" stroke-width="34"/>
+  <path d="M0 145 H360 C390 145 400 165 425 165 H555 C580 165 590 145 620 145 H1280" fill="none" stroke="url(#water)" stroke-width="23"/>
+  <rect x="130" y="220" width="430" height="420" rx="28" fill="#fff" stroke="#9ca3af" stroke-width="4"/>
+  <rect x="300" y="272" width="115" height="250" rx="54" fill="#c9dcf4" stroke="#9ca3af" stroke-width="4"/>
+  <rect x="175" y="480" width="330" height="125" rx="18" fill="#fff" stroke="#9ca3af" stroke-width="4"/>
+  <rect x="175" y="530" width="330" height="75" rx="18" fill="#eef2f7"/>
+  <text x="205" y="515" font-family="Arial,sans-serif" font-weight="700" font-size="24" fill="#64748b">Salt level 74%</text>
+  <g font-family="Arial,sans-serif"><rect x="700" y="240" width="360" height="80" rx="16" fill="#fff" stroke="#bfdbfe"/><text x="730" y="270" font-size="18" fill="#64748b">Remaining capacity</text><text x="730" y="303" font-size="28" font-weight="700" fill="#334155">0.41 m³×°dH</text>
+  <rect x="700" y="350" width="360" height="80" rx="16" fill="#fff" stroke="#bfdbfe"/><text x="730" y="380" font-size="18" fill="#64748b">Regeneration</text><text x="730" y="413" font-size="28" font-weight="700" fill="#334155">No regeneration</text>
+  <rect x="700" y="460" width="360" height="80" rx="16" fill="#fff" stroke="#bfdbfe"/><text x="730" y="490" font-size="18" fill="#64748b">Last regeneration</text><text x="730" y="523" font-size="28" font-weight="700" fill="#334155">16.09.2026 · 04:54</text></g>
+  <g font-family="Arial,sans-serif"><rect x="80" y="100" width="190" height="68" rx="14" fill="#fff" stroke="#bfdbfe"/><text x="100" y="126" font-size="16" fill="#64748b">Raw water</text><text x="100" y="154" font-size="25" font-weight="700" fill="#334155">22.0 °dH</text>
+  <rect x="500" y="100" width="190" height="68" rx="14" fill="#fff" stroke="#bfdbfe"/><text x="520" y="126" font-size="16" fill="#64748b">Flow</text><text x="520" y="154" font-size="25" font-weight="700" fill="#334155">0.36 m³/h</text></g>
+</svg>

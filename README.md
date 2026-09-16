@@ -41,6 +41,9 @@ Existing configurations from older versions automatically use the new **Floating
 value_style: text     # text | compact | card
 ```
 
+## Example Card
+![Pengu Water Softener HA Card preview](https://raw.githubusercontent.com/Borderlane-HA/Pengu-Water-Softener-Home-Assistant-Card/main/screenshots/Screenshot1.png)
+
 ## Integration profiles
 
 ### Automatic / generic

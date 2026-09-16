@@ -1,37 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 250" role="img" aria-label="Pengu Heat Card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 260" role="img" aria-label="Pengu Water Softener Card">
   <defs>
     <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="0%" stop-color="#eff8ff"/>
       <stop offset="100%" stop-color="#f8fafc"/>
     </linearGradient>
-    <linearGradient id="accent" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="#2563eb"/>
-      <stop offset="100%" stop-color="#ef4444"/>
+    <linearGradient id="water" x1="0" x2="1">
+      <stop offset="0%" stop-color="#93c5fd"/>
+      <stop offset="100%" stop-color="#0284c7"/>
     </linearGradient>
   </defs>
-
-  <rect width="1000" height="250" rx="34" fill="url(#bg)"/>
-
-  <g transform="translate(30 24)">
-    <rect x="0" y="0" width="196" height="196" rx="30" fill="#ffffff" stroke="#dbeafe" stroke-width="2"/>
-
-    <ellipse cx="92" cy="118" rx="50" ry="57" fill="#0f172a"/>
-    <ellipse cx="92" cy="129" rx="35" ry="42" fill="#f8fafc"/>
-    <ellipse cx="77" cy="113" rx="6.5" ry="9" fill="#0f172a"/>
-    <ellipse cx="107" cy="113" rx="6.5" ry="9" fill="#0f172a"/>
-    <polygon points="92,124 112,135 92,145 72,135" fill="#f59e0b"/>
-
-    <path d="M129 49c0-20 16-36 36-36s36 16 36 36v60c0 20-16 36-36 36s-36-16-36-36z"
-          fill="#dbeafe" stroke="#93c5fd" stroke-width="5"/>
-    <rect x="160" y="34" width="9" height="77" rx="4.5" fill="url(#accent)"/>
-    <circle cx="164.5" cy="121" r="16" fill="#ef4444"/>
-
-    <path d="M29 170c22-25 43-25 66 0" fill="none" stroke="#2563eb" stroke-width="9" stroke-linecap="round"/>
+  <rect width="1200" height="260" rx="36" fill="url(#bg)"/>
+  <g transform="translate(34 28)">
+    <rect width="204" height="204" rx="34" fill="#fff" stroke="#dbeafe" stroke-width="3"/>
+    <ellipse cx="80" cy="126" rx="47" ry="55" fill="#0f172a"/>
+    <ellipse cx="80" cy="137" rx="32" ry="40" fill="#f8fafc"/>
+    <ellipse cx="67" cy="121" rx="6" ry="8.5" fill="#0f172a"/>
+    <ellipse cx="94" cy="121" rx="6" ry="8.5" fill="#0f172a"/>
+    <polygon points="80,132 98,142 80,152 62,142" fill="#f59e0b"/>
+    <path d="M18 177c22-24 43-24 66 0" fill="none" stroke="#2563eb" stroke-width="9" stroke-linecap="round"/>
+    <g transform="translate(116 35)">
+      <rect x="8" y="8" width="61" height="128" rx="25" fill="#eef6ff" stroke="#94a3b8" stroke-width="4"/>
+      <rect x="18" y="71" width="41" height="55" rx="16" fill="#bfdbfe" opacity=".8"/>
+      <path d="M39 -2 C39 -2 16 25 16 42a23 23 0 0 0 46 0C62 25 39 -2 39 -2Z" fill="url(#water)" stroke="#0284c7" stroke-width="3"/>
+      <path d="M27 43c7 7 17 7 24 0" fill="none" stroke="#e0f2fe" stroke-width="4" stroke-linecap="round"/>
+    </g>
   </g>
-
-  <g transform="translate(270 58)">
-    <text x="0" y="46" font-size="48" font-family="Inter, Arial, sans-serif" font-weight="800" fill="#0f172a">Pengu Heat Card</text>
-    <text x="0" y="91" font-size="23" font-family="Inter, Arial, sans-serif" fill="#475569">Solar thermal · Heat source · Domestic hot water</text>
-    <text x="0" y="133" font-size="19" font-family="Inter, Arial, sans-serif" fill="#64748b">Full GUI editor · HACS · Clickable entities · Drag &amp; drop labels</text>
+  <g transform="translate(285 60)" font-family="Inter,Arial,sans-serif">
+    <text x="0" y="48" font-size="48" font-weight="800" fill="#0f172a">Pengu Water Softener Card</text>
+    <text x="0" y="94" font-size="24" fill="#475569">Flow · Hardness · Salt level · Capacity · Regeneration</text>
+    <text x="0" y="139" font-size="20" fill="#64748b">Home Assistant · HACS · Floating values · Drag &amp; drop positioning</text>
   </g>
 </svg>

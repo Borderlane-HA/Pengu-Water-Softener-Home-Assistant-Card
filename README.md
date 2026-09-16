@@ -1,16 +1,10 @@
 # Pengu Water Softener Card
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Borderlane-HA/Pengu-Water-Softener-Home-Assistant-Card/main/assets/pengu-logo.png" alt="Pengu Water Softener Card" width="420">
-</p>
+![Pengu Water Softener Card](https://raw.githubusercontent.com/Borderlane-HA/Pengu-Water-Softener-Home-Assistant-Card/refs/heads/main/assets/pengu-logo.png)
 
 A stylish and configurable **Home Assistant dashboard card for water softeners**. It shows only the values you actually configure, supports animated flow and regeneration states, and lets you position values directly in the visual editor via drag & drop.
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Borderlane-HA/Pengu-Water-Softener-Home-Assistant-Card/main/screenshots/preview.png" alt="Pengu Water Softener Card preview" width="900">
-</p>
-
-> **Current version:** 0.1.1
+![Pengu Water Softener Card preview](https://raw.githubusercontent.com/Borderlane-HA/Pengu-Water-Softener-Home-Assistant-Card/refs/heads/main/screenshots/preview.png)
 
 ## Highlights
 
@@ -31,6 +25,22 @@ A stylish and configurable **Home Assistant dashboard card for water softeners**
 - German / English automatically follows the Home Assistant language
 - More-info dialog on configured values
 
+## Value display modes
+
+The value overlays can be changed in the visual editor:
+
+- **Floating text** — default; no box, no fixed minimum width, best for free positioning around the schematic
+- **Compact badge** — subtle translucent background with very small padding
+- **Card** — classic boxed layout from the first releases
+
+Normal measurements use floating text by default. Status values such as regeneration and errors keep a small, subtle status background so they remain easy to recognize.
+
+Existing configurations from older versions automatically use the new **Floating text** mode unless `value_style` is explicitly set.
+
+```yaml
+value_style: text     # text | compact | card
+```
+
 ## Integration profiles
 
 ### Automatic / generic
@@ -39,11 +49,9 @@ Works with any Home Assistant integration that exposes water-softener values as 
 
 ### Grünbeck softliQ SC — `tizianodeg/gruenbeck_softliQ_SC`
 
-The dedicated Grünbeck profile is optimized for the local Home Assistant integration:
+The dedicated Grünbeck profile is optimized for the [tizianodeg/gruenbeck_softliQ_SC Home Assistant integration](https://github.com/tizianodeg/gruenbeck_softliQ_SC).
 
-https://github.com/tizianodeg/gruenbeck_softliQ_SC
-
-The profile recognizes the common softliQ SC entities and regeneration states and can **auto-assign detected Grünbeck entities** from the card editor. Detection happens entirely from the entities already present in Home Assistant; the card does not create additional requests to the water softener.
+The profile recognizes common softliQ SC entities and regeneration states and can **auto-assign detected Grünbeck entities** from the card editor. Detection happens entirely from the entities already present in Home Assistant; the card does not create additional requests to the water softener.
 
 Typical supported values include:
 
@@ -120,6 +128,7 @@ type: custom:pengu-water-softener-card
 title: Enthärtungsanlage
 language: auto
 integration_profile: gruenbeck_softliq
+value_style: text
 flow_entity: sensor.softliq_sc18_aktueller_durchfluss
 raw_hardness_entity: sensor.softliq_sc18_rohwasserharte
 remaining_capacity_entity: sensor.softliq_sc18_restkapazitat
@@ -134,11 +143,11 @@ When **Grünbeck softliQ SC (tizianodeg)** is selected as the integration profil
 
 It scans the Home Assistant entities already loaded in the browser and fills matching empty fields. Existing manual assignments are never overwritten. After auto-assignment, remove any values you do not want to display and position the remaining values with drag & drop.
 
-## Entity picker fix in 0.1.1
+## Entity picker handling
 
-Version 0.1.1 changes the editor so selecting an entity no longer rebuilds the complete editor while Home Assistant is still processing the picker event. It also ignores empty fallback `change` events that could otherwise clear a value immediately after selection.
+Entity selection is unit-agnostic. Sensors using units such as `m³/h`, `m3/h`, `°dH`, `%`, `m³`, `L`, `d`, `h` and text-state sensors can be assigned normally.
 
-This applies to **all entity fields**, including flow sensors using units such as `m³/h` / `m3/h`, hardness sensors such as `°dH`, selectors and buttons.
+The editor avoids rebuilding an entity picker while Home Assistant is processing its selection event, preventing selected entities from immediately disappearing again.
 
 ## Salt / fill-level handling
 
@@ -188,6 +197,12 @@ pos_remaining_capacity_y: 37
 ```
 
 Use **Reset value positions** to restore the defaults.
+
+## HACS README images
+
+The README intentionally uses plain Markdown image syntax and absolute HTTPS URLs to PNG files in the repository. This avoids relying on HTML `<picture>` or advanced markup that HACS may render differently from GitHub.
+
+If HACS still shows an older README immediately after a release, refresh the repository information after the new GitHub release/tag is available; HACS can temporarily display cached release metadata.
 
 ## Repository
 

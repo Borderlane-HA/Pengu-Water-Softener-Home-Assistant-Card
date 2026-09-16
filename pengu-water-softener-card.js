@@ -1,4 +1,4 @@
-const PENGU_WATER_VERSION = "0.1.1";
+const PENGU_WATER_VERSION = "0.1.2";
 
 const T = {
   en: {
@@ -24,6 +24,11 @@ const T = {
     style_modern: "Clean modern",
     style_technical: "Technical",
     style_compact: "Compact",
+    value_style: "Value display",
+    value_style_text: "Floating text",
+    value_style_compact: "Compact badge",
+    value_style_card: "Card",
+    value_style_hint: "Floating text uses only the space needed by the label and value. Compact badge adds a subtle background; Card keeps the classic boxed layout.",
     animation_mode: "Flow animation",
     animation_off: "Off",
     animation_subtle: "Subtle",
@@ -136,6 +141,11 @@ const T = {
     style_modern: "Modern",
     style_technical: "Technisch",
     style_compact: "Kompakt",
+    value_style: "Wertdarstellung",
+    value_style_text: "Schwebender Text",
+    value_style_compact: "Kompakt",
+    value_style_card: "Kachel",
+    value_style_hint: "Schwebender Text belegt nur den tatsächlich benötigten Platz. Kompakt ergänzt einen dezenten Hintergrund; Kachel behält die klassische Box-Darstellung.",
     animation_mode: "Durchflussanimation",
     animation_off: "Aus",
     animation_subtle: "Dezent",
@@ -367,6 +377,7 @@ function normalizeConfig(config = {}) {
     language: "auto",
     integration_profile: "auto",
     visual_style: "modern",
+    value_style: "text",
     animation_mode: "subtle",
     tap_action: "more-info",
     salt_level_mode: "auto",
@@ -539,7 +550,9 @@ function pill(config, hass, lang, def, customValue = null, tone = "blue") {
   const value = customValue ?? formatEntity(hass, entityId, lang);
   if (!value) return "";
   const label = getLabel(config, lang, key);
-  return `<div class="metric tone-${tone}" data-entity-id="${esc(entityId)}" style="left:${p.x}%;top:${p.y}%">
+  const valueStyle = ["text","compact","card"].includes(config.value_style) ? config.value_style : "text";
+  const statusClass = ["regeneration","last_error","manual_regeneration"].includes(key) ? " status-metric" : "";
+  return `<div class="metric value-${valueStyle} tone-${tone}${statusClass}" data-entity-id="${esc(entityId)}" style="left:${p.x}%;top:${p.y}%">
     <span class="metric-label">${esc(label)}</span><span class="metric-value">${esc(value)}</span>
   </div>`;
 }
@@ -554,10 +567,18 @@ function styles() {
     .canvas{position:relative;width:100%;aspect-ratio:10/7.2;min-height:360px;overflow:hidden;border-radius:16px;background:linear-gradient(180deg,rgba(248,250,252,.66),rgba(255,255,255,.1));}
     .diagram{position:absolute;inset:0;width:100%;height:100%}
     .overlay{position:absolute;inset:0;pointer-events:none}
-    .metric{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;min-width:112px;max-width:210px;padding:7px 10px;border:1px solid rgba(148,163,184,.32);border-radius:11px;background:color-mix(in srgb,var(--card-background-color,#fff) 92%,transparent);box-shadow:0 3px 10px rgba(15,23,42,.08);backdrop-filter:blur(5px);pointer-events:auto;cursor:pointer;z-index:4}
-    .metric-label{font-size:.68rem;font-weight:650;color:var(--secondary-text-color,#64748b);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .metric-value{font-size:.96rem;font-weight:760;line-height:1.28;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .tone-blue{border-color:rgba(59,130,246,.26)} .tone-green{border-color:rgba(34,197,94,.32)} .tone-amber{border-color:rgba(245,158,11,.38)} .tone-red{border-color:rgba(239,68,68,.38)} .tone-gray{border-color:rgba(100,116,139,.32)}
+    .metric{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;max-width:230px;pointer-events:auto;cursor:pointer;z-index:4;box-sizing:border-box}
+    .metric-label{font-size:.68rem;font-weight:650;color:var(--secondary-text-color,#64748b);white-space:nowrap;line-height:1.15}
+    .metric-value{font-size:.96rem;font-weight:760;line-height:1.24;white-space:nowrap;color:var(--primary-text-color,#334155)}
+    .value-text{padding:2px 3px;border:0;background:transparent;box-shadow:none;backdrop-filter:none}
+    .value-text .metric-label,.value-text .metric-value{text-shadow:0 1px 2px color-mix(in srgb,var(--card-background-color,#fff) 88%,transparent),0 0 5px color-mix(in srgb,var(--card-background-color,#fff) 70%,transparent)}
+    .value-compact{padding:5px 8px;border:1px solid rgba(148,163,184,.18);border-radius:8px;background:color-mix(in srgb,var(--card-background-color,#fff) 78%,transparent);box-shadow:0 2px 7px rgba(15,23,42,.045);backdrop-filter:blur(3px)}
+    .value-card{min-width:112px;padding:7px 10px;border:1px solid rgba(148,163,184,.32);border-radius:11px;background:color-mix(in srgb,var(--card-background-color,#fff) 92%,transparent);box-shadow:0 3px 10px rgba(15,23,42,.08);backdrop-filter:blur(5px)}
+    .value-text.status-metric{padding:4px 7px;border-radius:999px;background:color-mix(in srgb,var(--card-background-color,#fff) 72%,transparent);box-shadow:0 2px 7px rgba(15,23,42,.04);backdrop-filter:blur(3px)}
+    .value-text.status-metric .metric-label{font-size:.62rem}
+    .tone-red .metric-value{color:var(--error-color,#dc2626)}
+    .tone-amber .metric-value{color:#b45309}
+    .value-compact.tone-blue,.value-card.tone-blue{border-color:rgba(59,130,246,.24)} .value-compact.tone-green,.value-card.tone-green{border-color:rgba(34,197,94,.30)} .value-compact.tone-amber,.value-card.tone-amber{border-color:rgba(245,158,11,.34)} .value-compact.tone-red,.value-card.tone-red{border-color:rgba(239,68,68,.35)} .value-compact.tone-gray,.value-card.tone-gray{border-color:rgba(100,116,139,.28)}
     .tap-none .metric{cursor:default}
     .empty-note{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);padding:7px 12px;border:1px dashed rgba(148,163,184,.5);border-radius:999px;background:rgba(255,255,255,.88);color:#64748b;font-size:.74rem;white-space:nowrap}
     .pipe{fill:none;stroke:#d7e3ef;stroke-width:22;stroke-linecap:round;stroke-linejoin:round}
@@ -587,9 +608,10 @@ function styles() {
     .status-ring-bg{fill:none;stroke:#e2e8f0;stroke-width:10}
     .status-ring{fill:none;stroke:#3b82f6;stroke-width:10;stroke-linecap:round;transform:rotate(-90deg);transform-origin:750px 446px}
     .style-technical .canvas{background:transparent;border:1px solid rgba(148,163,184,.28);border-radius:10px}
-    .style-technical .metric{border-radius:6px;box-shadow:none;background:var(--card-background-color,#fff)}
-    .style-compact .header{font-size:1rem;padding-top:10px}.style-compact .shell{padding:4px 7px 9px}.style-compact .canvas{min-height:310px}.style-compact .metric{padding:5px 8px;min-width:100px}.style-compact .metric-value{font-size:.86rem}.style-compact .metric-label{font-size:.61rem}
-    @media(max-width:520px){.canvas{min-height:420px;aspect-ratio:8/7.6}.metric{min-width:92px;max-width:150px;padding:6px 8px}.metric-label{font-size:.61rem}.metric-value{font-size:.82rem}}
+    .style-technical .value-card{border-radius:6px;box-shadow:none;background:var(--card-background-color,#fff)}
+    .style-technical .value-compact{border-radius:4px;box-shadow:none}
+    .style-compact .header{font-size:1rem;padding-top:10px}.style-compact .shell{padding:4px 7px 9px}.style-compact .canvas{min-height:310px}.style-compact .metric-value{font-size:.86rem}.style-compact .metric-label{font-size:.61rem}.style-compact .value-card{padding:5px 8px;min-width:100px}.style-compact .value-compact{padding:4px 6px}
+    @media(max-width:520px){.canvas{min-height:420px;aspect-ratio:8/7.6}.metric{max-width:160px}.value-card{min-width:92px;padding:6px 8px}.value-compact{padding:4px 6px}.metric-label{font-size:.61rem}.metric-value{font-size:.82rem}}
   `;
 }
 
@@ -696,7 +718,7 @@ class PenguWaterSoftenerCard extends HTMLElement {
   }
   static getConfigElement() { return document.createElement("pengu-water-softener-card-editor"); }
   static getStubConfig() {
-    return { language:"auto", integration_profile:"auto", visual_style:"modern", animation_mode:"subtle", tap_action:"more-info" };
+    return { language:"auto", integration_profile:"auto", visual_style:"modern", value_style:"text", animation_mode:"subtle", tap_action:"more-info" };
   }
   setConfig(config) { if (!config) throw new Error("Invalid configuration"); this._config = normalizeConfig(config); this._render(); }
   set hass(hass) { this._hass = hass; this._render(); }
@@ -748,6 +770,7 @@ class PenguWaterSoftenerCardEditor extends HTMLElement {
 
       <div class="panel"><div class="panel-title">${esc(tr(lang,"appearance"))}</div><div class="grid">
         <div class="field"><label>${esc(tr(lang,"visual_style"))}</label><select data-key="visual_style"><option value="modern" ${this._config.visual_style==="modern"?"selected":""}>${esc(tr(lang,"style_modern"))}</option><option value="technical" ${this._config.visual_style==="technical"?"selected":""}>${esc(tr(lang,"style_technical"))}</option><option value="compact" ${this._config.visual_style==="compact"?"selected":""}>${esc(tr(lang,"style_compact"))}</option></select></div>
+        <div class="field"><label>${esc(tr(lang,"value_style"))}</label><select data-key="value_style"><option value="text" ${this._config.value_style==="text"?"selected":""}>${esc(tr(lang,"value_style_text"))}</option><option value="compact" ${this._config.value_style==="compact"?"selected":""}>${esc(tr(lang,"value_style_compact"))}</option><option value="card" ${this._config.value_style==="card"?"selected":""}>${esc(tr(lang,"value_style_card"))}</option></select><div class="mini-hint">${esc(tr(lang,"value_style_hint"))}</div></div>
         <div class="field"><label>${esc(tr(lang,"animation_mode"))}</label><select data-key="animation_mode"><option value="off" ${this._config.animation_mode==="off"?"selected":""}>${esc(tr(lang,"animation_off"))}</option><option value="subtle" ${this._config.animation_mode==="subtle"?"selected":""}>${esc(tr(lang,"animation_subtle"))}</option><option value="normal" ${this._config.animation_mode==="normal"?"selected":""}>${esc(tr(lang,"animation_normal"))}</option></select></div>
         <div class="field"><label>${esc(tr(lang,"tap_action"))}</label><select data-key="tap_action"><option value="more-info" ${this._config.tap_action!=="none"?"selected":""}>${esc(tr(lang,"tap_more_info"))}</option><option value="none" ${this._config.tap_action==="none"?"selected":""}>${esc(tr(lang,"tap_none"))}</option></select></div>
       </div></div>
@@ -810,7 +833,7 @@ class PenguWaterSoftenerCardEditor extends HTMLElement {
     // the picker while its value-changed event is still being handled can cause
     // Home Assistant to restore the previous value. Only refresh the drag area.
     if (key.endsWith("_entity")) this._refreshPositions();
-    else if(["language","integration_profile","visual_style","salt_level_mode","salt_level_max_unit"].includes(key)) this._render();
+    else if(["language","integration_profile","visual_style","value_style","salt_level_mode","salt_level_max_unit"].includes(key)) this._render();
   }
   _refreshPositions(){
     const canvas=this.shadowRoot?.getElementById("positionCanvas");
@@ -847,7 +870,7 @@ if (!window.customCards.some((c)=>c.type==="pengu-water-softener-card")) {
     type:"pengu-water-softener-card",
     name:"Pengu Water Softener Card",
     preview:true,
-    description:"Visual water-softener card with flow, hardness, salt level, capacity and regeneration animation.",
+    description:"Visual water-softener card with floating values, flow, hardness, salt level, capacity and regeneration animation.",
     documentationURL:"https://github.com/Borderlane-HA/Pengu-Water-Softener-Home-Assistant-Card",
     getEntitySuggestion:(hass,entityId)=>{
       const s=hass?.states?.[entityId]; if(!s)return null;

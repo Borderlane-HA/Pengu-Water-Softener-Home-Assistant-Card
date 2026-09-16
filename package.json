@@ -1,6 +1,6 @@
 {
   "name": "pengu-water-softener-card",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A stylish Home Assistant card for water softeners with flow, hardness, salt level, capacity and regeneration status.",
   "license": "MIT",
   "homepage": "https://github.com/Borderlane-HA/Pengu-Water-Softener-Home-Assistant-Card",

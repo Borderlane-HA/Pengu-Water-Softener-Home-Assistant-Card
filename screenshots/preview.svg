@@ -1,20 +1,49 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-label="Pengu Water Softener Card preview">
   <defs>
-    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#f8fbfe"/><stop offset="1" stop-color="#eef5fa"/></linearGradient>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#fbfdff"/><stop offset="1" stop-color="#f3f8fb"/></linearGradient>
     <linearGradient id="water" x2="1"><stop stop-color="#cfe8fb"/><stop offset="1" stop-color="#2c9bd7"/></linearGradient>
+    <linearGradient id="resin" x2="0" y2="1"><stop stop-color="#eaf4ff"/><stop offset="1" stop-color="#b8d0ef"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#0f172a" flood-opacity=".08"/></filter>
   </defs>
   <rect width="1280" height="720" rx="24" fill="url(#bg)"/>
-  <text x="54" y="72" font-family="Arial,sans-serif" font-weight="700" font-size="34" fill="#334155">Pengu Water Softener Card</text>
-  <path d="M0 145 H360 C390 145 400 165 425 165 H555 C580 165 590 145 620 145 H1280" fill="none" stroke="#b8c9d8" stroke-width="34"/>
-  <path d="M0 145 H360 C390 145 400 165 425 165 H555 C580 165 590 145 620 145 H1280" fill="none" stroke="url(#water)" stroke-width="23"/>
-  <rect x="130" y="220" width="430" height="420" rx="28" fill="#fff" stroke="#9ca3af" stroke-width="4"/>
-  <rect x="300" y="272" width="115" height="250" rx="54" fill="#c9dcf4" stroke="#9ca3af" stroke-width="4"/>
-  <rect x="175" y="480" width="330" height="125" rx="18" fill="#fff" stroke="#9ca3af" stroke-width="4"/>
-  <rect x="175" y="530" width="330" height="75" rx="18" fill="#eef2f7"/>
-  <text x="205" y="515" font-family="Arial,sans-serif" font-weight="700" font-size="24" fill="#64748b">Salt level 74%</text>
-  <g font-family="Arial,sans-serif"><rect x="700" y="240" width="360" height="80" rx="16" fill="#fff" stroke="#bfdbfe"/><text x="730" y="270" font-size="18" fill="#64748b">Remaining capacity</text><text x="730" y="303" font-size="28" font-weight="700" fill="#334155">0.41 m³·°dH</text>
-  <rect x="700" y="350" width="360" height="80" rx="16" fill="#fff" stroke="#bfdbfe"/><text x="730" y="380" font-size="18" fill="#64748b">Regeneration</text><text x="730" y="413" font-size="28" font-weight="700" fill="#334155">No regeneration</text>
-  <rect x="700" y="460" width="360" height="80" rx="16" fill="#fff" stroke="#bfdbfe"/><text x="730" y="490" font-size="18" fill="#64748b">Last regeneration</text><text x="730" y="523" font-size="28" font-weight="700" fill="#334155">16.09.2026 · 04:54</text></g>
-  <g font-family="Arial,sans-serif"><rect x="80" y="100" width="190" height="68" rx="14" fill="#fff" stroke="#bfdbfe"/><text x="100" y="126" font-size="16" fill="#64748b">Raw water</text><text x="100" y="154" font-size="25" font-weight="700" fill="#334155">22.0 °dH</text>
-  <rect x="500" y="100" width="190" height="68" rx="14" fill="#fff" stroke="#bfdbfe"/><text x="520" y="126" font-size="16" fill="#64748b">Flow</text><text x="520" y="154" font-size="25" font-weight="700" fill="#334155">0.36 m³/h</text></g>
+  <text x="48" y="64" font-family="Arial,sans-serif" font-weight="700" font-size="34" fill="#334155">Pengu Water Softener Card</text>
+
+  <path d="M0 150 H350 C382 150 394 169 425 169 H550 C580 169 594 150 625 150 H1280" fill="none" stroke="#aabaca" stroke-width="34" opacity=".7"/>
+  <path d="M0 150 H350 C382 150 394 169 425 169 H550 C580 169 594 150 625 150 H1280" fill="none" stroke="url(#water)" stroke-width="23"/>
+
+  <g filter="url(#shadow)">
+    <rect x="118" y="218" width="430" height="426" rx="30" fill="#fff" stroke="#9ca3af" stroke-width="4"/>
+    <path d="M142 275 Q330 242 524 275" fill="none" stroke="#b5bdc6" stroke-width="3"/>
+    <rect x="295" y="287" width="112" height="245" rx="55" fill="url(#resin)" stroke="#9ca3af" stroke-width="4"/>
+    <path d="M351 285V510" stroke="#60a5fa" stroke-width="10" stroke-dasharray="18 14" stroke-linecap="round" opacity=".7"/>
+    <rect x="163" y="486" width="334" height="128" rx="18" fill="#fff" stroke="#9ca3af" stroke-width="4"/>
+    <rect x="163" y="550" width="334" height="64" rx="14" fill="#dbeafe" opacity=".75"/>
+  </g>
+
+  <g font-family="Arial,sans-serif" fill="#334155">
+    <text x="78" y="116" font-size="17" font-weight="600" fill="#64748b">Raw water</text>
+    <text x="78" y="145" font-size="27" font-weight="700">22 °dH</text>
+
+    <text x="465" y="94" font-size="17" font-weight="600" fill="#64748b">Flow</text>
+    <text x="465" y="123" font-size="27" font-weight="700">0.36 m³/h</text>
+
+    <text x="166" y="462" font-size="17" font-weight="600" fill="#64748b">Salt level</text>
+    <text x="166" y="489" font-size="26" font-weight="700">3.67 cm · 74%</text>
+
+    <text x="696" y="248" font-size="17" font-weight="600" fill="#64748b">Remaining capacity</text>
+    <text x="696" y="279" font-size="28" font-weight="700">0.41 m³·°dH</text>
+
+    <rect x="686" y="321" width="300" height="58" rx="29" fill="#ffffff" fill-opacity=".82" stroke="#dbeafe"/>
+    <text x="708" y="345" font-size="14" font-weight="600" fill="#64748b">Regeneration</text>
+    <text x="708" y="367" font-size="22" font-weight="700">No regeneration</text>
+
+    <text x="696" y="431" font-size="17" font-weight="600" fill="#64748b">3-day average</text>
+    <text x="696" y="462" font-size="27" font-weight="700">0.34 m³</text>
+
+    <text x="696" y="515" font-size="17" font-weight="600" fill="#64748b">Yesterday</text>
+    <text x="696" y="546" font-size="27" font-weight="700">318 L</text>
+
+    <text x="696" y="598" font-size="17" font-weight="600" fill="#64748b">Last regeneration</text>
+    <text x="696" y="629" font-size="27" font-weight="700">16.09.2026 · 04:54</text>
+  </g>
 </svg>

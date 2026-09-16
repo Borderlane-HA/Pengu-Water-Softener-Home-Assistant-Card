@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.1.2
+
+- Added three value display modes: **Floating text**, **Compact badge**, and **Card**.
+- Changed the default value display to **Floating text** to reduce visual clutter and make drag-and-drop positioning more precise.
+- Removed fixed minimum widths, borders, shadows and backgrounds from normal values in Floating text mode.
+- Kept regeneration/error controls as subtle status pills in Floating text mode for better state recognition.
+- Preserved the classic boxed layout as the optional `value_style: card` mode.
+- Added `value_style: compact` for a lightweight translucent alternative.
+- Updated responsive styling for the new value modes.
+- Rebuilt the project banner specifically for **Pengu Water Softener Card** (the previous PNG still contained Pengu Heat Card artwork).
+- Rebuilt the README preview to show the new floating-value layout.
+- Changed README images from HTML `<img>` blocks to plain Markdown images with absolute HTTPS PNG URLs for better HACS compatibility.
+- Removed the hard-coded current-version line from the README to avoid stale version text in HACS caches.
+
 ## 0.1.1
 
 - Fixed entity selections not being retained in the visual editor.

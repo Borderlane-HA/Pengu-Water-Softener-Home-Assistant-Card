@@ -1,4 +1,4 @@
-const PENGU_WATER_VERSION = "0.1.3";
+const PENGU_WATER_VERSION = "0.1.4";
 
 const T = {
   en: {
@@ -16,6 +16,7 @@ const T = {
     profile_gruenbeck: "Grünbeck softliQ SC (tizianodeg)",
     profile_help_auto: "Generic mode for any water-softener integration. Assign the entities you want to show.",
     profile_help_gruenbeck: "Optimized for tizianodeg/gruenbeck_softliQ_SC. The profile can detect the integration's common entities locally in Home Assistant; it does not make additional requests to the softener.",
+    regeneration_hint_gruenbeck: "For Grünbeck, Current regeneration step is the primary source. Regeneration active is optional and used only as a fallback when no usable step is available.",
     auto_assign_profile: "Auto-assign detected Grünbeck entities",
     auto_assign_done: "Detected entities assigned",
     auto_assign_none: "No matching Grünbeck entities found",
@@ -133,6 +134,7 @@ const T = {
     profile_gruenbeck: "Grünbeck softliQ SC (tizianodeg)",
     profile_help_auto: "Generischer Modus für beliebige Enthärtungsanlagen-Integrationen. Es werden nur die von dir zugewiesenen Entitäten angezeigt.",
     profile_help_gruenbeck: "Optimiert für tizianodeg/gruenbeck_softliQ_SC. Das Profil kann die typischen Entitäten lokal in Home Assistant erkennen; die Karte erzeugt keine zusätzlichen Anfragen an die Enthärtungsanlage.",
+    regeneration_hint_gruenbeck: "Bei Grünbeck ist Aktueller Regenerationsschritt die primäre Quelle. Regeneration aktiv ist optional und wird nur als Fallback verwendet, wenn kein nutzbarer Schritt vorhanden ist.",
     auto_assign_profile: "Erkannte Grünbeck-Entitäten automatisch zuweisen",
     auto_assign_done: "Erkannte Entitäten wurden zugewiesen",
     auto_assign_none: "Keine passenden Grünbeck-Entitäten gefunden",
@@ -505,16 +507,65 @@ function saltPercent(hass, config) {
   return Math.max(0, Math.min(100, pct));
 }
 
-function normalizeRegenStep(raw) {
-  const v = `${raw || ""}`.trim().toLowerCase();
-  if (!v) return "none";
-  if (/(keine|none|idle|no regen|standby|bereit)/.test(v)) return "none";
-  if (/(salztank.*füll|sole.*füll|brine.*fill|fill.*brine|tank.*fill)/.test(v)) return "fill";
-  if (/(salzung|besalz|brin|sole ziehen|draw brine)/.test(v)) return "brine";
-  if (/(langsam.*spül|slow.*rinse)/.test(v)) return "slow_rinse";
-  if (/(rückspül|rueckspuel|backwash|back wash)/.test(v)) return "backwash";
-  if (/(ausspül|ausspuel|fast.*rinse|final.*rinse|rinse)/.test(v)) return "rinse";
-  return "unknown";
+const GRUENBECK_REGEN_STEPS = {
+  "0": "none",
+  "1": "fill",
+  "2": "brine",
+  "3": "slow_rinse",
+  "4": "backwash",
+  "5": "rinse"
+};
+
+function isGruenbeckStepEntity(config, entityId, state) {
+  if (config?.integration_profile === "gruenbeck_softliq") return true;
+  const id = `${entityId || ""}`.toLowerCase();
+  const key = `${state?.attributes?.translation_key || ""}`;
+  return id.includes("softliq") || key === "D_Y_5";
+}
+
+function frontendStateText(hass, entityId) {
+  const state = getState(hass, entityId);
+  if (!state) return "";
+  try {
+    if (typeof hass?.formatEntityState === "function") {
+      const value = hass.formatEntityState(state);
+      if (value !== undefined && value !== null) return `${value}`;
+    }
+  } catch (_) {}
+  return `${state.state ?? ""}`;
+}
+
+function normalizeRegenStep(raw, config = null, entityId = "", state = null, formatted = "") {
+  const rawValue = `${raw ?? ""}`.trim();
+  if (isGruenbeckStepEntity(config, entityId, state) && Object.prototype.hasOwnProperty.call(GRUENBECK_REGEN_STEPS, rawValue)) {
+    return GRUENBECK_REGEN_STEPS[rawValue];
+  }
+  const values = [formatted, rawValue].filter(Boolean);
+  for (const value of values) {
+    const v = `${value}`.trim().toLowerCase();
+    if (!v) continue;
+    if (/(keine|none|idle|no regen|standby|bereit)/.test(v)) return "none";
+    if (/(salztank.*füll|sole.*füll|brine.*fill|fill.*brine|tank.*fill)/.test(v)) return "fill";
+    if (/(salzung|besalz|brin|sole ziehen|draw brine)/.test(v)) return "brine";
+    if (/(langsam.*spül|slow.*rinse|verdräng|displace)/.test(v)) return "slow_rinse";
+    if (/(rückspül|rueckspuel|backwash|back wash)/.test(v)) return "backwash";
+    if (/(ausspül|ausspuel|fast.*rinse|final.*rinse|rinse)/.test(v)) return "rinse";
+  }
+  return rawValue ? "unknown" : "none";
+}
+
+function regenerationState(hass, config) {
+  const stepEntityId = config.regeneration_step_entity || "";
+  const stepState = usableState(hass, stepEntityId) ? getState(hass, stepEntityId) : null;
+  const raw = stepState ? `${stepState.state}` : "";
+  const formatted = stepState ? frontendStateText(hass, stepEntityId) : "";
+  const step = normalizeRegenStep(raw, config, stepEntityId, stepState, formatted);
+  const hasUsableStep = Boolean(stepState);
+  const fallbackActive = config.regeneration_active_entity ? boolishActive(hass, config.regeneration_active_entity) : false;
+  // A usable step sensor is authoritative. For Grünbeck, state 0 explicitly means
+  // "No regeneration" and must not be overridden by the binary sensor.
+  const active = hasUsableStep ? step !== "none" : fallbackActive;
+  return { raw, formatted, step, active, hasUsableStep, fallbackActive };
 }
 
 function localizedRegenStep(lang, step, raw) {
@@ -587,15 +638,32 @@ function styles() {
     .flow-on .pipe-water{stroke-dasharray:18 16;animation:waterFlow var(--flow-duration,1.7s) linear infinite}
     .anim-off .pipe-water{animation:none;stroke-dasharray:none}
     .anim-subtle.flow-on .pipe-water{stroke-dasharray:30 25;animation-duration:2.6s;opacity:.78}
-    .regen-path{fill:none;stroke:#60a5fa;stroke-width:10;stroke-linecap:round;stroke-dasharray:14 12;opacity:0}
-    .regen-active .regen-path{opacity:.82;animation:regenDown 1.6s linear infinite}
-    .regen-backwash .regen-path{animation-name:regenUp}
-    .regen-slow_rinse .regen-path{animation-duration:3.0s}
-    .regen-brine .regen-path{stroke:#f59e0b;animation-duration:2.1s}
-    .regen-fill .salt-fill-stream{opacity:.9;animation:saltFill 1.2s ease-in-out infinite}
+    .service-path,.regen-flow-path{fill:none;stroke:#60a5fa;stroke-width:9;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:14 12;opacity:0}
+    .service-path{stroke:#60a5fa}
+    .flow-on .service-path{opacity:.72;animation:flowDown 1.8s linear infinite}
+    .regen-flow-path{stroke:#38bdf8}
+    .regen-active.regen-fill .regen-fill-path,
+    .regen-active.regen-brine .regen-brine-path,
+    .regen-active.regen-slow_rinse .regen-slow-path,
+    .regen-active.regen-backwash .regen-backwash-path,
+    .regen-active.regen-rinse .regen-rinse-path{opacity:.9;animation:regenForward 1.55s linear infinite}
+    .regen-active.regen-slow_rinse .regen-slow-path{animation-duration:2.8s}
+    .regen-active.regen-brine .regen-brine-path{stroke:#f59e0b;animation-duration:2.1s}
+    .regen-active.regen-backwash .regen-backwash-path{animation-duration:1.8s}
+    .regen-active.regen-fill .salt-fill-stream{opacity:.9;animation:saltFill 1.2s ease-in-out infinite}
+    .anim-subtle.flow-on .service-path{opacity:.58;animation-duration:2.8s}
+    .anim-subtle.regen-active .regen-flow-path{opacity:.72}
+    .anim-off .service-path,.anim-off .regen-flow-path,.anim-off .salt-fill-stream{animation:none!important;stroke-dasharray:none!important}
+    .anim-off .service-path,.anim-off .regen-flow-path{opacity:0!important}
+    .anim-off.regen-active.regen-fill .regen-fill-path,
+    .anim-off.regen-active.regen-brine .regen-brine-path,
+    .anim-off.regen-active.regen-slow_rinse .regen-slow-path,
+    .anim-off.regen-active.regen-backwash .regen-backwash-path,
+    .anim-off.regen-active.regen-rinse .regen-rinse-path{opacity:.46!important}
+    .anim-off.regen-active.regen-fill .salt-fill-stream{opacity:.5!important}
     @keyframes waterFlow{to{stroke-dashoffset:-68}}
-    @keyframes regenDown{to{stroke-dashoffset:-52}}
-    @keyframes regenUp{to{stroke-dashoffset:52}}
+    @keyframes flowDown{to{stroke-dashoffset:-52}}
+    @keyframes regenForward{to{stroke-dashoffset:-52}}
     @keyframes saltFill{0%,100%{opacity:.3;transform:translateY(-3px)}50%{opacity:1;transform:translateY(3px)}}
     .valve{fill:#f8fafc;stroke:#93a4b6;stroke-width:3}
     .cabinet{fill:rgba(248,250,252,.88);stroke:#9ca3af;stroke-width:3}
@@ -617,11 +685,9 @@ function diagramSvg(hass, config, lang) {
   const flow = numState(hass, config.flow_entity) || 0;
   const flowActive = flow > 0.001;
   const flowDuration = Math.max(.75, Math.min(2.4, 2.1 - Math.min(flow, 3) * .35));
-  const rawStep = usableState(hass, config.regeneration_step_entity) ? getState(hass, config.regeneration_step_entity).state : "";
-  let step = normalizeRegenStep(rawStep);
-  const activeEntity = config.regeneration_active_entity ? boolishActive(hass, config.regeneration_active_entity) : false;
-  const regenActive = activeEntity || (step !== "none" && step !== "unknown") || (step === "unknown" && Boolean(rawStep));
-  if (!regenActive && !rawStep) step = "none";
+  const regen = regenerationState(hass, config);
+  const step = regen.step;
+  const regenActive = regen.active;
   const pct = saltPercent(hass, config);
   const saltY = pct === null ? 584 : 584 - (pct / 100) * 126;
   const saltH = pct === null ? 0 : 584 - saltY;
@@ -657,10 +723,26 @@ function diagramSvg(hass, config, lang) {
 
     <rect class="resin" x="260" y="242" width="100" height="270" rx="48"/>
     <rect x="279" y="270" width="62" height="212" rx="30" fill="#b9cff0" opacity=".35"/>
-    <path class="regen-path" d="M310 258 V488"/>
-    <path class="regen-path" d="M296 488 V258" opacity=".35"/>
+    <!-- Static hydraulic connections -->
     <path d="M342 168 C342 218 310 225 310 258" fill="none" stroke="#cbdcf5" stroke-width="16" stroke-linecap="round"/>
     <path d="M490 168 C490 206 375 212 352 260" fill="none" stroke="#cbdcf5" stroke-width="16" stroke-linecap="round"/>
+    <path d="M360 490 C410 500 500 490 532 430 V360" fill="none" stroke="#dbe5ef" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M210 454 C210 410 238 394 270 390" fill="none" stroke="#e2e8f0" stroke-width="10" stroke-linecap="round"/>
+
+    <!-- Normal service water: only animated when current-flow sensor is > 0 -->
+    <path class="service-path" d="M342 168 C342 218 310 225 310 260 V486 C310 500 342 500 352 486 V266 C370 222 468 210 490 168"/>
+
+    <!-- Regeneration flows. The active step selects exactly one route. -->
+    <!-- 1 Fill brine tank: inlet -> brine tank -->
+    <path class="regen-flow-path regen-fill-path" d="M342 168 C342 220 300 232 270 270 C238 312 210 362 210 476"/>
+    <!-- 2 Brining: brine tank -> resin -> drain -->
+    <path class="regen-flow-path regen-brine-path" d="M210 520 V454 C210 410 238 394 270 390 C286 388 300 374 310 350 V486 C310 504 340 510 360 490 C410 500 500 490 532 430 V360"/>
+    <!-- 3 Slow rinse: inlet -> resin slowly -> drain -->
+    <path class="regen-flow-path regen-slow-path" d="M342 168 C342 218 310 225 310 260 V486 C310 504 340 510 360 490 C410 500 500 490 532 430 V360"/>
+    <!-- 4 Backwash: inlet -> bottom of resin -> upward -> drain -->
+    <path class="regen-flow-path regen-backwash-path" d="M342 168 C382 210 400 260 398 330 C396 420 360 486 330 486 V270 C330 246 360 224 390 214 C450 194 502 220 532 260 V360"/>
+    <!-- 5 Rinse: inlet -> resin downflow -> drain -->
+    <path class="regen-flow-path regen-rinse-path" d="M342 168 C342 218 310 225 310 260 V486 C310 504 340 510 360 490 C410 500 500 490 532 430 V360"/>
 
     <rect class="salt-shell" x="162" y="446" width="270" height="150" rx="16"/>
     <rect class="level-water" x="162" y="536" width="270" height="48" rx="10" clip-path="url(#saltClip)"/>
@@ -677,11 +759,12 @@ function diagramSvg(hass, config, lang) {
 }
 
 function overlayHtml(hass, config, lang) {
-  const rawStep = usableState(hass, config.regeneration_step_entity) ? getState(hass, config.regeneration_step_entity).state : "";
-  const step = normalizeRegenStep(rawStep);
-  const regenFallbackEntity = !config.regeneration_step_entity && config.regeneration_active_entity ? config.regeneration_active_entity : null;
+  const regen = regenerationState(hass, config);
+  const rawStep = regen.raw;
+  const step = regen.step;
+  const regenFallbackEntity = !regen.hasUsableStep && config.regeneration_active_entity ? config.regeneration_active_entity : null;
   const toneFor = (key) => {
-    if (key === "regeneration") return step === "none" ? "gray" : "blue";
+    if (key === "regeneration") return regen.active ? "blue" : "gray";
     if (key === "last_error") {
       const v = `${getState(hass, config.last_error_entity)?.state || ""}`.toLowerCase();
       return /(kein|none|no error|ok)/.test(v) ? "green" : "red";
@@ -693,12 +776,12 @@ function overlayHtml(hass, config, lang) {
     return "blue";
   };
   const customValues = {
-    regeneration: rawStep ? localizedRegenStep(lang, step, rawStep) : (regenFallbackEntity ? (boolishActive(hass, regenFallbackEntity) ? tr(lang,"regen_unknown") : tr(lang,"no_regeneration")) : null),
+    regeneration: regen.hasUsableStep ? localizedRegenStep(lang, step, rawStep) : (regenFallbackEntity ? (boolishActive(hass, regenFallbackEntity) ? tr(lang,"regen_unknown") : tr(lang,"no_regeneration")) : null),
     regeneration_progress: usableState(hass, config.regeneration_progress_entity) ? formatEntity(hass, config.regeneration_progress_entity, lang, { decimals:0 }) : null,
     manual_regeneration: config.manual_regeneration_entity ? tr(lang,"press") : null
   };
   return POSITION_DEFS.map((def) => {
-    if (def[0] === "regeneration" && regenFallbackEntity && !config.regeneration_step_entity) {
+    if (def[0] === "regeneration" && regenFallbackEntity && !regen.hasUsableStep) {
       const shadow = {...config, regeneration_step_entity: regenFallbackEntity};
       return pill(shadow, hass, lang, def, customValues.regeneration, toneFor("regeneration"));
     }
@@ -771,7 +854,7 @@ class PenguWaterSoftenerCardEditor extends HTMLElement {
       </div></div>
 
       <div class="panel"><div class="panel-title">${esc(tr(lang,"primary_values"))}</div><div class="grid">${fieldGrid("primary")}</div></div>
-      <div class="panel"><div class="panel-title">${esc(tr(lang,"regeneration"))}</div><div class="grid">${fieldGrid("regeneration")}</div></div>
+      <div class="panel"><div class="panel-title">${esc(tr(lang,"regeneration"))}</div><div class="grid">${fieldGrid("regeneration")}</div>${this._config.integration_profile==="gruenbeck_softliq"?`<div class="hint">${esc(tr(lang,"regeneration_hint_gruenbeck"))}</div>`:""}</div>
       <div class="panel"><div class="panel-title">${esc(tr(lang,"consumption"))}</div><div class="grid">${fieldGrid("consumption")}</div></div>
       <div class="panel"><div class="panel-title">${esc(tr(lang,"diagnostics"))}</div><div class="grid">${fieldGrid("diagnostics")}</div></div>
       <div class="panel"><div class="panel-title">${esc(tr(lang,"controls"))}</div><div class="grid">${fieldGrid("controls")}</div></div>

@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.4
+
+- Added the exact Grünbeck softliQ SC regeneration-step mapping used by `tizianodeg/gruenbeck_softliQ_SC`: `0` no regeneration, `1` fill brine tank, `2` brining, `3` slow rinse, `4` backwash, `5` rinse.
+- Fixed raw numeric regeneration values such as `0` being displayed directly on the card instead of their translated step names.
+- Made **Current regeneration step** authoritative when available; **Regeneration active** is now an optional fallback instead of overriding a valid step.
+- Added step-specific hydraulic flow paths to the schematic for brine-tank filling, brining, slow rinse, backwash and rinse.
+- Backwash is visualized as a reverse/up-flow; brining uses a distinct brine-colored route and salt-tank filling highlights the fill route.
+- Normal service-flow animation now runs only when the configured current-flow sensor is above zero.
+- Regeneration flow remains driven by the regeneration step so internal regeneration is still shown when household/service flow is zero.
+- `animation_mode: off` now also disables regeneration and salt-fill motion while retaining a static active regeneration route.
+- Added a Grünbeck-specific editor hint explaining that the binary regeneration sensor is optional.
+
 ## 0.1.3
 
 - Removed the fixed **Salt level** text from the water-softener schematic.

@@ -1,15 +1,15 @@
 # Pengu Water Softener Card
 
-![Pengu Water Softener Card](https://raw.githubusercontent.com/Borderlane-HA/Pengu-Water-Softener-Home-Assistant-Card/refs/heads/main/assets/pengu-logo.png)
+![Pengu Water Softener Card](https://raw.githubusercontent.com/Borderlane-HA/Pengu-Water-Softener-Home-Assistant-Card/main/assets/pengu-logo.png)
 
 A stylish and configurable **Home Assistant dashboard card for water softeners**. It shows only the values you actually configure, supports animated flow and regeneration states, and lets you position values directly in the visual editor via drag & drop.
 
-![Pengu Water Softener Card preview](https://raw.githubusercontent.com/Borderlane-HA/Pengu-Water-Softener-Home-Assistant-Card/refs/heads/main/screenshots/preview.png)
+![Pengu Water Softener Card preview](https://raw.githubusercontent.com/Borderlane-HA/Pengu-Water-Softener-Home-Assistant-Card/main/screenshots/preview.png)
 
 ## Highlights
 
 - Visual water-softener schematic with resin vessel, salt tank and pipework
-- Animated **current water flow**
+- Animated **current water flow** — service-flow animation runs only when the configured current-flow sensor is above zero
 - **Raw-water hardness** and optional **target / soft-water hardness**
 - Salt / fill-level visualization
 - Automatic handling for `%` and unitless `0…1` level sensors
@@ -17,7 +17,7 @@ A stylish and configurable **Home Assistant dashboard card for water softeners**
 - Supports level sensors that represent either **fill height** or **distance from top**
 - Remaining capacity as percentage and/or amount
 - Regeneration state, step, progress and remaining time/amount
-- Step-aware regeneration animation for filling, brining, slow rinse, backwash and rinse
+- Step-aware hydraulic regeneration flow for filling, brining, slow rinse, backwash and rinse
 - Optional consumption, maintenance, error and diagnostic values
 - Optional operating mode and manual-regeneration entities
 - **No configured/usable entity = no value shown**
@@ -52,6 +52,8 @@ Works with any Home Assistant integration that exposes water-softener values as 
 The dedicated Grünbeck profile is optimized for the [tizianodeg/gruenbeck_softliQ_SC Home Assistant integration](https://github.com/tizianodeg/gruenbeck_softliQ_SC).
 
 The profile recognizes common softliQ SC entities and regeneration states and can **auto-assign detected Grünbeck entities** from the card editor. Detection happens entirely from the entities already present in Home Assistant; the card does not create additional requests to the water softener.
+
+For this integration, **Aktueller Regenerationsschritt / Current regeneration step is the primary regeneration entity**. The separate binary sensor **Regeneration aktiv / Regeneration active is optional** and is used only as a fallback if no usable step sensor is configured.
 
 Typical supported values include:
 
@@ -172,18 +174,27 @@ salt_level_mode: fill_height
 
 If an ultrasonic sensor reports the **distance from the top**, select `distance_top`. The displayed percentage is then inverted automatically.
 
-## Regeneration states
+## Regeneration states and hydraulic flow
 
-The card currently recognizes common German and English states including:
+For `tizianodeg/gruenbeck_softliQ_SC`, the integration exposes the raw regeneration step as a numeric value and Home Assistant translates it in the UI. The Grünbeck profile maps the same values directly inside the card:
 
-- Keine Regeneration / No regeneration
-- Salztank füllen / Fill brine tank
-- Salzung / Brining
-- Langsames Spülen / Slow rinse
-- Rückspülen / Backwash
-- Ausspülen / Rinse
+| Raw value | German | English | Visual flow |
+| --- | --- | --- | --- |
+| `0` | Keine Regeneration | No regeneration | No regeneration flow |
+| `1` | Salztank füllen | Fill brine tank | Inlet → salt/brine tank |
+| `2` | Salzung | Brining | Brine tank → resin vessel → drain |
+| `3` | Langsames Spülen | Slow rinse | Inlet → resin vessel → drain, slow animation |
+| `4` | Rückspülen | Backwash | Reverse/up-flow through the resin vessel → drain |
+| `5` | Ausspülen | Rinse | Inlet → resin vessel → drain |
 
-The internal animation changes according to the detected step.
+Text-based German and English step names are still recognized for generic integrations.
+
+The two animations are deliberately independent:
+
+- **Normal service flow** animates only while the configured `flow_entity` reports a value greater than zero. At `0 m³/h` the service flow is static.
+- **Regeneration flow** is driven by the current regeneration step. This is intentional because the normal household-flow sensor can be zero while the softener is internally filling, brining, rinsing or backwashing.
+
+If a usable regeneration-step entity is present, it is authoritative. A raw Grünbeck state of `0` therefore always displays **Keine Regeneration / No regeneration** even if a separate binary sensor is temporarily inconsistent.
 
 ## Drag & drop positions
 

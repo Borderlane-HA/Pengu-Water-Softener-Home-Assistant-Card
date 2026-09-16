@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.1
+
+- Fixed entity selections not being retained in the visual editor.
+- Prevented empty fallback picker events from clearing a just-selected entity.
+- Entity changes now refresh only the drag-and-drop position area instead of rebuilding the complete editor.
+- Verified the picker logic is unit-agnostic, including `m³/h`, `m3/h`, `°dH`, `%`, `m³`, `L`, `d`, `h` and text-state sensors.
+- Added a dedicated **Grünbeck softliQ SC (tizianodeg)** integration profile.
+- Added optional automatic assignment of commonly exposed `tizianodeg/gruenbeck_softliQ_SC` entities.
+- Added optional fields for remaining-capacity amount, total flow, salt consumption per year and last-error age.
+- Improved common unit rendering (`m3/h` → `m³/h`, `m3` → `m³`).
+- Updated all repository/documentation links to `Borderlane-HA/Pengu-Water-Softener-Home-Assistant-Card`.
+- Switched README images to absolute raw GitHub PNG URLs for reliable rendering in HACS.
+
 ## 0.1.0
 
 - Initial public preview.

@@ -1,8 +1,8 @@
-const PENGU_WATER_VERSION = "0.1.0";
+const PENGU_WATER_VERSION = "0.1.1";
 
 const T = {
   en: {
-    card_name: "PenguWaterSoftener",
+    card_name: "Pengu Water Softener Card",
     title_default: "Water softener",
     general: "General",
     language: "Language",
@@ -13,7 +13,12 @@ const T = {
     title_placeholder: "Water softener",
     integration_profile: "Integration profile",
     profile_auto: "Automatic / generic",
-    profile_gruenbeck: "Grünbeck softliQ",
+    profile_gruenbeck: "Grünbeck softliQ SC (tizianodeg)",
+    profile_help_auto: "Generic mode for any water-softener integration. Assign the entities you want to show.",
+    profile_help_gruenbeck: "Optimized for tizianodeg/gruenbeck_softliQ_SC. The profile can detect the integration's common entities locally in Home Assistant; it does not make additional requests to the softener.",
+    auto_assign_profile: "Auto-assign detected Grünbeck entities",
+    auto_assign_done: "Detected entities assigned",
+    auto_assign_none: "No matching Grünbeck entities found",
     appearance: "Appearance",
     visual_style: "Visual style",
     style_modern: "Clean modern",
@@ -48,6 +53,7 @@ const T = {
     salt_level_entity: "Salt / fill level",
     salt_range_entity: "Salt range",
     remaining_capacity_entity: "Remaining capacity",
+    remaining_capacity_amount_entity: "Remaining capacity (amount)",
     regeneration_active_entity: "Regeneration active",
     regeneration_step_entity: "Regeneration step",
     regeneration_progress_entity: "Regeneration progress",
@@ -57,12 +63,15 @@ const T = {
     average_consumption_entity: "Average consumption",
     peak_flow_entity: "Peak flow",
     total_consumption_entity: "Total consumption",
+    total_flow_entity: "Total flow",
+    salt_consumption_year_entity: "Salt consumption per year",
     soft_water_meter_entity: "Soft-water meter",
     capacity_number_entity: "Capacity number",
     consumption_capacity_entity: "Consumed capacity rate",
     chlorine_current_entity: "Chlorine current",
     maintenance_days_entity: "Days to next maintenance",
     last_error_entity: "Last error",
+    last_error_age_entity: "Last error age",
     software_version_entity: "Software version",
     mode_entity: "Operating mode",
     manual_regeneration_entity: "Manual regeneration button",
@@ -72,6 +81,7 @@ const T = {
     label_salt_level: "Salt level",
     label_salt_range: "Salt range",
     label_remaining_capacity: "Remaining capacity",
+    label_remaining_capacity_amount: "Capacity amount",
     label_regeneration: "Regeneration",
     label_regeneration_progress: "Progress",
     label_regeneration_remaining: "Remaining",
@@ -80,12 +90,15 @@ const T = {
     label_average_consumption: "3-day average",
     label_peak_flow: "Peak flow",
     label_total_consumption: "Total consumption",
+    label_total_flow: "Total flow",
+    label_salt_consumption_year: "Salt / year",
     label_soft_water_meter: "Soft-water meter",
     label_capacity_number: "Capacity number",
     label_consumption_capacity: "Capacity rate",
     label_chlorine_current: "Chlorine current",
     label_maintenance_days: "Maintenance",
     label_last_error: "Last error",
+    label_last_error_age: "Error age",
     label_software_version: "Software",
     label_mode: "Mode",
     label_manual_regeneration: "Manual regeneration",
@@ -101,7 +114,7 @@ const T = {
     unavailable: "Unavailable"
   },
   de: {
-    card_name: "PenguWaterSoftener",
+    card_name: "Pengu Water Softener Card",
     title_default: "Enthärtungsanlage",
     general: "Allgemein",
     language: "Sprache",
@@ -112,7 +125,12 @@ const T = {
     title_placeholder: "Enthärtungsanlage",
     integration_profile: "Integrationsprofil",
     profile_auto: "Automatisch / generisch",
-    profile_gruenbeck: "Grünbeck softliQ",
+    profile_gruenbeck: "Grünbeck softliQ SC (tizianodeg)",
+    profile_help_auto: "Generischer Modus für beliebige Enthärtungsanlagen-Integrationen. Es werden nur die von dir zugewiesenen Entitäten angezeigt.",
+    profile_help_gruenbeck: "Optimiert für tizianodeg/gruenbeck_softliQ_SC. Das Profil kann die typischen Entitäten lokal in Home Assistant erkennen; die Karte erzeugt keine zusätzlichen Anfragen an die Enthärtungsanlage.",
+    auto_assign_profile: "Erkannte Grünbeck-Entitäten automatisch zuweisen",
+    auto_assign_done: "Erkannte Entitäten wurden zugewiesen",
+    auto_assign_none: "Keine passenden Grünbeck-Entitäten gefunden",
     appearance: "Darstellung",
     visual_style: "Darstellungsstil",
     style_modern: "Modern",
@@ -147,6 +165,7 @@ const T = {
     salt_level_entity: "Salz- / Füllstand",
     salt_range_entity: "Salzreichweite",
     remaining_capacity_entity: "Restkapazität",
+    remaining_capacity_amount_entity: "Verbleibende Kapazität (Menge)",
     regeneration_active_entity: "Regeneration aktiv",
     regeneration_step_entity: "Aktueller Regenerationsschritt",
     regeneration_progress_entity: "Prozentuale Regeneration",
@@ -156,12 +175,15 @@ const T = {
     average_consumption_entity: "Durchschnittsverbrauch",
     peak_flow_entity: "Flussspitzenwert",
     total_consumption_entity: "Gesamtverbrauch",
+    total_flow_entity: "Gesamtdurchfluss",
+    salt_consumption_year_entity: "Salzverbrauch pro Jahr",
     soft_water_meter_entity: "Weichwasservolumenmesser",
     capacity_number_entity: "Kapazitätsnummer",
     consumption_capacity_entity: "Verbrauchskapazitätsrate",
     chlorine_current_entity: "Chlorstrom",
     maintenance_days_entity: "Tage bis zur nächsten Wartung",
     last_error_entity: "Letzter Fehler",
+    last_error_age_entity: "Alter des letzten Fehlers",
     software_version_entity: "Software-Version",
     mode_entity: "Modus",
     manual_regeneration_entity: "Manuelle Regeneration",
@@ -171,6 +193,7 @@ const T = {
     label_salt_level: "Salzstand",
     label_salt_range: "Salzreichweite",
     label_remaining_capacity: "Restkapazität",
+    label_remaining_capacity_amount: "Kapazitätsmenge",
     label_regeneration: "Regeneration",
     label_regeneration_progress: "Fortschritt",
     label_regeneration_remaining: "Verbleibend",
@@ -179,12 +202,15 @@ const T = {
     label_average_consumption: "Ø 3 Tage",
     label_peak_flow: "Spitzenfluss",
     label_total_consumption: "Gesamtverbrauch",
+    label_total_flow: "Gesamtdurchfluss",
+    label_salt_consumption_year: "Salz / Jahr",
     label_soft_water_meter: "Weichwasserzähler",
     label_capacity_number: "Kapazitätsnummer",
     label_consumption_capacity: "Kapazitätsrate",
     label_chlorine_current: "Chlorstrom",
     label_maintenance_days: "Wartung",
     label_last_error: "Letzter Fehler",
+    label_last_error_age: "Fehleralter",
     label_software_version: "Software",
     label_mode: "Modus",
     label_manual_regeneration: "Manuelle Regeneration",
@@ -202,10 +228,10 @@ const T = {
 };
 
 const ENTITY_GROUPS = {
-  primary: ["flow_entity", "raw_hardness_entity", "target_hardness_entity", "salt_level_entity", "salt_range_entity", "remaining_capacity_entity"],
+  primary: ["flow_entity", "raw_hardness_entity", "target_hardness_entity", "salt_level_entity", "salt_range_entity", "remaining_capacity_entity", "remaining_capacity_amount_entity"],
   regeneration: ["regeneration_active_entity", "regeneration_step_entity", "regeneration_progress_entity", "regeneration_remaining_entity", "last_regeneration_entity"],
-  consumption: ["water_yesterday_entity", "average_consumption_entity", "peak_flow_entity", "total_consumption_entity", "soft_water_meter_entity", "capacity_number_entity", "consumption_capacity_entity"],
-  diagnostics: ["chlorine_current_entity", "maintenance_days_entity", "last_error_entity", "software_version_entity"],
+  consumption: ["water_yesterday_entity", "average_consumption_entity", "peak_flow_entity", "total_consumption_entity", "total_flow_entity", "soft_water_meter_entity", "capacity_number_entity", "consumption_capacity_entity", "salt_consumption_year_entity"],
+  diagnostics: ["chlorine_current_entity", "maintenance_days_entity", "last_error_entity", "last_error_age_entity", "software_version_entity"],
   controls: ["mode_entity", "manual_regeneration_entity"]
 };
 
@@ -213,7 +239,8 @@ const POSITION_DEFS = [
   ["flow", "flow_entity", "label_flow", 50, 12],
   ["raw_hardness", "raw_hardness_entity", "label_raw_hardness", 18, 13],
   ["target_hardness", "target_hardness_entity", "label_target_hardness", 82, 13],
-  ["remaining_capacity", "remaining_capacity_entity", "label_remaining_capacity", 77, 39],
+  ["remaining_capacity", "remaining_capacity_entity", "label_remaining_capacity", 77, 37],
+  ["remaining_capacity_amount", "remaining_capacity_amount_entity", "label_remaining_capacity_amount", 77, 45],
   ["regeneration", "regeneration_step_entity", "label_regeneration", 77, 55],
   ["regeneration_progress", "regeneration_progress_entity", "label_regeneration_progress", 77, 68],
   ["regeneration_remaining", "regeneration_remaining_entity", "label_regeneration_remaining", 77, 80],
@@ -224,16 +251,102 @@ const POSITION_DEFS = [
   ["average_consumption", "average_consumption_entity", "label_average_consumption", 48, 96],
   ["peak_flow", "peak_flow_entity", "label_peak_flow", 61, 27],
   ["total_consumption", "total_consumption_entity", "label_total_consumption", 50, 77],
+  ["total_flow", "total_flow_entity", "label_total_flow", 50, 84],
   ["soft_water_meter", "soft_water_meter_entity", "label_soft_water_meter", 50, 66],
   ["capacity_number", "capacity_number_entity", "label_capacity_number", 67, 27],
   ["consumption_capacity", "consumption_capacity_entity", "label_consumption_capacity", 61, 35],
   ["chlorine_current", "chlorine_current_entity", "label_chlorine_current", 34, 29],
   ["maintenance_days", "maintenance_days_entity", "label_maintenance_days", 64, 91],
   ["last_error", "last_error_entity", "label_last_error", 64, 83],
+  ["last_error_age", "last_error_age_entity", "label_last_error_age", 64, 88],
   ["software_version", "software_version_entity", "label_software_version", 42, 37],
   ["mode", "mode_entity", "label_mode", 36, 17],
-  ["manual_regeneration", "manual_regeneration_entity", "label_manual_regeneration", 36, 95]
+  ["manual_regeneration", "manual_regeneration_entity", "label_manual_regeneration", 36, 95],
+  ["salt_consumption_year", "salt_consumption_year_entity", "label_salt_consumption_year", 24, 96]
 ];
+
+const GRUENBECK_PROFILE_HINTS = {
+  flow_entity: ["aktueller durchfluss", "current flow", "current flow rate"],
+  raw_hardness_entity: ["rohwasserharte", "raw water hardness"],
+  target_hardness_entity: ["weichwasserharte", "zielwasserharte", "soft water hardness", "target water hardness", "target hardness"],
+  salt_level_entity: ["salzfullstand", "salzstand", "salt level", "salt fill level"],
+  salt_range_entity: ["salzreichweite in tagen", "salzreichweite", "salt range"],
+  remaining_capacity_entity: ["restkapazitat", "remaining capacity percent", "remaining capacity %"],
+  remaining_capacity_amount_entity: ["verbleibende kapazitat", "remaining capacity amount"],
+  regeneration_active_entity: ["regeneration aktiv", "regeneration active"],
+  regeneration_step_entity: ["aktueller regenerationsschritt", "current regeneration step", "regeneration step"],
+  regeneration_progress_entity: ["prozentuale regeneration", "regeneration progress"],
+  regeneration_remaining_entity: ["verbleibende zeit menge des regenerationsschritts", "verbleibende zeit menge der regeneration", "remaining regeneration time", "remaining regeneration amount"],
+  last_regeneration_entity: ["letzte regeneration", "last regeneration"],
+  water_yesterday_entity: ["wasserverbrauch gestern", "water consumption yesterday"],
+  average_consumption_entity: ["durchschnittsverbrauch der letzten 3 tage", "durchschnittsverbrauch", "average consumption"],
+  peak_flow_entity: ["flussspitzenwert", "flow peak", "peak flow"],
+  total_consumption_entity: ["gesamtverbrauch", "total consumption"],
+  total_flow_entity: ["gesamtdurchfluss", "total flow"],
+  soft_water_meter_entity: ["weichwasservolumenmesser", "soft water volume meter", "soft-water meter"],
+  capacity_number_entity: ["kapazitatsnummer", "capacity number"],
+  consumption_capacity_entity: ["verbrauchskapazitatsrate", "consumption capacity rate", "consumed capacity rate"],
+  salt_consumption_year_entity: ["salzverbrauch pro jahr", "salt consumption per year"],
+  chlorine_current_entity: ["chlorstrom", "chlorine current"],
+  maintenance_days_entity: ["tage bis zur nachsten wartung", "days until next maintenance", "days to next maintenance"],
+  last_error_age_entity: ["letzter fehler stunden alt", "last error hours old", "last error age"],
+  last_error_entity: ["letzter fehler", "last error"],
+  software_version_entity: ["software-version", "software version"],
+  mode_entity: ["modus", "mode", "operating mode"],
+  manual_regeneration_entity: ["manuelle regeneration", "manual regeneration"]
+};
+
+function normalizeSearchText(value) {
+  return `${value ?? ""}`.toLowerCase()
+    .replaceAll("ä", "a").replaceAll("ö", "o").replaceAll("ü", "u").replaceAll("ß", "ss")
+    .replace(/[³²]/g, (m) => m === "³" ? "3" : "2")
+    .replace(/[^a-z0-9%]+/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function entitySearchText(entityId, state) {
+  return normalizeSearchText([
+    entityId,
+    state?.attributes?.friendly_name,
+    state?.attributes?.translation_key,
+    state?.attributes?.device_class,
+    state?.attributes?.unit_of_measurement
+  ].filter(Boolean).join(" "));
+}
+
+function profileMatchScore(entityId, state, hints) {
+  const text = entitySearchText(entityId, state);
+  const friendly = normalizeSearchText(state?.attributes?.friendly_name || "");
+  let score = 0;
+  for (const hintRaw of hints || []) {
+    const hint = normalizeSearchText(hintRaw);
+    if (!hint) continue;
+    if (friendly === hint) score = Math.max(score, 120 + hint.length);
+    else if (friendly.includes(hint)) score = Math.max(score, 90 + hint.length);
+    else if (text.includes(hint)) score = Math.max(score, 55 + hint.length);
+  }
+  return score;
+}
+
+function findProfileEntity(hass, key) {
+  const hints = GRUENBECK_PROFILE_HINTS[key];
+  if (!hints || !hass?.states) return null;
+  const allowed = key === "manual_regeneration_entity" ? new Set(["button", "input_button", "script"])
+    : key === "mode_entity" ? new Set(["select", "input_select", "sensor"])
+    : new Set(["sensor", "binary_sensor"]);
+  const candidates = Object.entries(hass.states).map(([entityId,state]) => {
+    const domain = entityId.split(".")[0];
+    if (!allowed.has(domain)) return null;
+    let score = profileMatchScore(entityId, state, hints);
+    if (!score) return null;
+    const unit = `${state?.attributes?.unit_of_measurement || ""}`;
+    if (key === "remaining_capacity_entity" && unit === "%") score += 35;
+    if (key === "remaining_capacity_amount_entity" && unit && unit !== "%") score += 20;
+    if (key === "flow_entity" && /m(?:3|³)\s*\/\s*h/i.test(unit)) score += 35;
+    if (key === "raw_hardness_entity" && /dh/i.test(unit)) score += 35;
+    return {entityId, score};
+  }).filter(Boolean).sort((a,b)=>b.score-a.score);
+  return candidates[0]?.entityId || null;
+}
 
 function esc(value) {
   return `${value ?? ""}`.replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]));
@@ -286,6 +399,13 @@ function unitOf(state) {
   return state?.attributes?.unit_of_measurement || "";
 }
 
+function displayUnit(unit) {
+  return `${unit || ""}`
+    .replace(/m3\/h/gi, "m³/h")
+    .replace(/m3\*°?dH/gi, "m³·°dH")
+    .replace(/m3/gi, "m³");
+}
+
 function decimalCount(value) {
   const a = Math.abs(value);
   if (a >= 100) return 0;
@@ -302,7 +422,7 @@ function formatEntity(hass, entityId, lang, options = {}) {
   if (Number.isFinite(n) && options.raw !== true) {
     const decimals = options.decimals ?? decimalCount(n);
     const value = new Intl.NumberFormat(lang === "de" ? "de-DE" : "en-US", { minimumFractionDigits: options.fixed ? decimals : 0, maximumFractionDigits: decimals }).format(n);
-    const unit = options.unit ?? unitOf(s);
+    const unit = displayUnit(options.unit ?? unitOf(s));
     return `${value}${unit ? ` ${unit}` : ""}`;
   }
   return `${s.state}`;
@@ -618,11 +738,11 @@ class PenguWaterSoftenerCardEditor extends HTMLElement {
     const items = this._positionItems(lang);
     this.shadowRoot.innerHTML = `<style>
       :host{display:block;font-family:var(--paper-font-body1_-_font-family,Roboto,sans-serif);color:var(--primary-text-color)}
-      .editor{display:grid;gap:14px;padding:4px 0}.panel{border:1px solid rgba(148,163,184,.28);border-radius:14px;padding:14px;background:var(--card-background-color,#fff)}.panel-title{font-weight:750;font-size:.95rem;margin-bottom:12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field label{font-size:.78rem;font-weight:650;color:var(--secondary-text-color,#64748b)}input[type=text],input[type=number],select{width:100%;box-sizing:border-box;min-height:42px;padding:9px 10px;border:1px solid rgba(148,163,184,.42);border-radius:10px;background:var(--card-background-color,#fff);color:var(--primary-text-color)}.hint{margin-top:10px;font-size:.72rem;color:var(--secondary-text-color,#64748b);line-height:1.4}.position-canvas{position:relative;width:100%;aspect-ratio:10/6.8;min-height:260px;border-radius:14px;border:1px dashed rgba(148,163,184,.55);background:linear-gradient(180deg,rgba(248,250,252,.9),rgba(241,245,249,.75));overflow:hidden;touch-action:none}.drag-chip{position:absolute;transform:translate(-50%,-50%);padding:7px 10px;border:1px solid #bfdbfe;border-radius:10px;background:#fff;box-shadow:0 3px 8px rgba(15,23,42,.08);color:#334155;font-size:.72rem;font-weight:650;cursor:grab;user-select:none;touch-action:none;white-space:nowrap}.drag-chip:active{cursor:grabbing;box-shadow:0 6px 18px rgba(15,23,42,.16)}button.reset{margin-top:10px;border:1px solid rgba(148,163,184,.4);border-radius:9px;background:var(--card-background-color,#fff);color:var(--primary-text-color);padding:8px 11px;cursor:pointer}@media(max-width:620px){.grid{grid-template-columns:1fr}}
+      .editor{display:grid;gap:14px;padding:4px 0}.panel{border:1px solid rgba(148,163,184,.28);border-radius:14px;padding:14px;background:var(--card-background-color,#fff)}.panel-title{font-weight:750;font-size:.95rem;margin-bottom:12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field label{font-size:.78rem;font-weight:650;color:var(--secondary-text-color,#64748b)}input[type=text],input[type=number],select{width:100%;box-sizing:border-box;min-height:42px;padding:9px 10px;border:1px solid rgba(148,163,184,.42);border-radius:10px;background:var(--card-background-color,#fff);color:var(--primary-text-color)}.hint{margin-top:10px;font-size:.72rem;color:var(--secondary-text-color,#64748b);line-height:1.4}.position-canvas{position:relative;width:100%;aspect-ratio:10/6.8;min-height:260px;border-radius:14px;border:1px dashed rgba(148,163,184,.55);background:linear-gradient(180deg,rgba(248,250,252,.9),rgba(241,245,249,.75));overflow:hidden;touch-action:none}.drag-chip{position:absolute;transform:translate(-50%,-50%);padding:7px 10px;border:1px solid #bfdbfe;border-radius:10px;background:#fff;box-shadow:0 3px 8px rgba(15,23,42,.08);color:#334155;font-size:.72rem;font-weight:650;cursor:grab;user-select:none;touch-action:none;white-space:nowrap}.drag-chip:active{cursor:grabbing;box-shadow:0 6px 18px rgba(15,23,42,.16)}button.reset,button.profile-auto{margin-top:10px;border:1px solid rgba(148,163,184,.4);border-radius:9px;background:var(--card-background-color,#fff);color:var(--primary-text-color);padding:8px 11px;cursor:pointer}.mini-hint{margin-top:6px;font-size:.69rem;color:var(--secondary-text-color,#64748b);line-height:1.35}@media(max-width:620px){.grid{grid-template-columns:1fr}}
     </style><div class="editor">
       <div class="panel"><div class="panel-title">${esc(tr(lang,"general"))}</div><div class="grid">
         <div class="field"><label>${esc(tr(lang,"language"))}</label><select data-key="language"><option value="auto" ${this._config.language==="auto"?"selected":""}>${esc(tr(lang,"auto"))}</option><option value="de" ${this._config.language==="de"?"selected":""}>${esc(tr(lang,"german"))}</option><option value="en" ${this._config.language==="en"?"selected":""}>${esc(tr(lang,"english"))}</option></select></div>
-        <div class="field"><label>${esc(tr(lang,"integration_profile"))}</label><select data-key="integration_profile"><option value="auto" ${this._config.integration_profile==="auto"?"selected":""}>${esc(tr(lang,"profile_auto"))}</option><option value="gruenbeck_softliq" ${this._config.integration_profile==="gruenbeck_softliq"?"selected":""}>${esc(tr(lang,"profile_gruenbeck"))}</option></select></div>
+        <div class="field"><label>${esc(tr(lang,"integration_profile"))}</label><select data-key="integration_profile"><option value="auto" ${this._config.integration_profile==="auto"?"selected":""}>${esc(tr(lang,"profile_auto"))}</option><option value="gruenbeck_softliq" ${this._config.integration_profile==="gruenbeck_softliq"?"selected":""}>${esc(tr(lang,"profile_gruenbeck"))}</option></select><div class="mini-hint">${esc(this._config.integration_profile==="gruenbeck_softliq"?tr(lang,"profile_help_gruenbeck"):tr(lang,"profile_help_auto"))}</div>${this._config.integration_profile==="gruenbeck_softliq"?`<button class="profile-auto" type="button" id="autoAssignProfile">${esc(tr(lang,"auto_assign_profile"))}</button><div class="mini-hint" id="profileAssignStatus"></div>`:""}</div>
         <div class="field"><label>${esc(tr(lang,"title"))}</label><input type="text" data-key="title" value="${esc(this._config.title||"")}" placeholder="${esc(tr(lang,"title_placeholder"))}"></div>
       </div></div>
 
@@ -644,7 +764,7 @@ class PenguWaterSoftenerCardEditor extends HTMLElement {
         <div class="field"><label>${esc(tr(lang,"salt_level_max_unit"))}</label><select data-key="salt_level_max_unit"><option value="auto" ${this._config.salt_level_max_unit==="auto"?"selected":""}>${esc(tr(lang,"auto"))}</option>${["mm","cm","m","g","kg","ml","L","m³"].map(u=>`<option value="${u}" ${this._config.salt_level_max_unit===u?"selected":""}>${u}</option>`).join("")}</select></div>
       </div><div class="hint">${esc(tr(lang,"salt_level_max_hint"))}</div></div>
 
-      <div class="panel"><div class="panel-title">${esc(tr(lang,"label_positions"))}</div><div class="position-canvas">${items.map(i=>`<div class="drag-chip" data-position-key="${i.key}" style="left:${this._posValue(i.key,"x",i.x)}%;top:${this._posValue(i.key,"y",i.y)}%">${esc(i.label)}</div>`).join("")}</div><button class="reset" type="button" id="resetPositions">${esc(tr(lang,"reset_positions"))}</button><div class="hint">${esc(tr(lang,"drag_labels_hint"))}</div></div>
+      <div class="panel"><div class="panel-title">${esc(tr(lang,"label_positions"))}</div><div class="position-canvas" id="positionCanvas">${items.map(i=>`<div class="drag-chip" data-position-key="${i.key}" style="left:${this._posValue(i.key,"x",i.x)}%;top:${this._posValue(i.key,"y",i.y)}%">${esc(i.label)}</div>`).join("")}</div><button class="reset" type="button" id="resetPositions">${esc(tr(lang,"reset_positions"))}</button><div class="hint">${esc(tr(lang,"drag_labels_hint"))}</div></div>
     </div>`;
     this._bind(); this._drag(); this._assignPickers();
   }
@@ -657,9 +777,18 @@ class PenguWaterSoftenerCardEditor extends HTMLElement {
       el.addEventListener(evName,()=>{ const key=el.dataset.key; let value=el.value; if(el.type==="number" && value!=="") value=Number(value); this._update(key,value); });
     });
     this.shadowRoot?.querySelectorAll("ha-entity-picker").forEach((picker)=>{
-      picker.addEventListener("value-changed",(ev)=>this._update(picker.dataset.key,ev.detail?.value||""));
-      picker.addEventListener("change",(ev)=>this._update(picker.dataset.key,ev.target?.value||""));
+      picker.addEventListener("value-changed",(ev)=>{
+        const value = ev.detail?.value ?? picker.value ?? "";
+        this._update(picker.dataset.key,value);
+      });
+      // Some Home Assistant versions also emit a native change event. Only use it
+      // as a non-empty fallback so it cannot erase the value just selected above.
+      picker.addEventListener("change",(ev)=>{
+        const value = ev.detail?.value ?? ev.target?.value;
+        if (typeof value === "string" && value && value !== this._config[picker.dataset.key]) this._update(picker.dataset.key,value);
+      });
     });
+    this.shadowRoot?.getElementById("autoAssignProfile")?.addEventListener("click",()=>this._autoAssignProfile());
     this.shadowRoot?.getElementById("resetPositions")?.addEventListener("click",()=>{
       const next={...this._config}; Object.keys(next).filter(k=>/^pos_.*_[xy]$/.test(k)).forEach(k=>delete next[k]); this._config=next; this._emit(); this._render();
     });
@@ -673,8 +802,38 @@ class PenguWaterSoftenerCardEditor extends HTMLElement {
     }));
   }
   _update(key,value){
-    const next={...this._config}; if(value===""||value===null||value===undefined||Number.isNaN(value)) delete next[key]; else next[key]=value; this._config=normalizeConfig(next); this._emit();
-    if(["language","integration_profile","visual_style","salt_level_mode","salt_level_max_unit"].includes(key) || key.endsWith("_entity")) this._render();
+    const next={...this._config};
+    if(value===""||value===null||value===undefined||Number.isNaN(value)) delete next[key]; else next[key]=value;
+    this._config=normalizeConfig(next);
+    this._emit();
+    // Do not rebuild the complete editor after an entity-picker change. Replacing
+    // the picker while its value-changed event is still being handled can cause
+    // Home Assistant to restore the previous value. Only refresh the drag area.
+    if (key.endsWith("_entity")) this._refreshPositions();
+    else if(["language","integration_profile","visual_style","salt_level_mode","salt_level_max_unit"].includes(key)) this._render();
+  }
+  _refreshPositions(){
+    const canvas=this.shadowRoot?.getElementById("positionCanvas");
+    if(!canvas)return;
+    const lang=resolveLanguage(this._hass,this._config);
+    canvas.innerHTML=this._positionItems(lang).map(i=>`<div class="drag-chip" data-position-key="${i.key}" style="left:${this._posValue(i.key,"x",i.x)}%;top:${this._posValue(i.key,"y",i.y)}%">${esc(i.label)}</div>`).join("");
+    this._drag();
+  }
+  _autoAssignProfile(){
+    if(this._config.integration_profile!=="gruenbeck_softliq" || !this._hass)return;
+    const next={...this._config};
+    let count=0;
+    Object.keys(GRUENBECK_PROFILE_HINTS).forEach((key)=>{
+      if(next[key])return;
+      const found=findProfileEntity(this._hass,key);
+      if(found){ next[key]=found; count+=1; }
+    });
+    this._config=normalizeConfig(next);
+    this._emit();
+    this._render();
+    const lang=resolveLanguage(this._hass,this._config);
+    const status=this.shadowRoot?.getElementById("profileAssignStatus");
+    if(status) status.textContent=count?`${tr(lang,"auto_assign_done")}: ${count}`:tr(lang,"auto_assign_none");
   }
   _emit(){ this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config},bubbles:true,composed:true})); }
 }
@@ -686,10 +845,10 @@ window.customCards = window.customCards || [];
 if (!window.customCards.some((c)=>c.type==="pengu-water-softener-card")) {
   window.customCards.push({
     type:"pengu-water-softener-card",
-    name:"PenguWaterSoftener",
+    name:"Pengu Water Softener Card",
     preview:true,
     description:"Visual water-softener card with flow, hardness, salt level, capacity and regeneration animation.",
-    documentationURL:"https://github.com/Borderlane-HA/PenguWaterSoftener",
+    documentationURL:"https://github.com/Borderlane-HA/Pengu-Water-Softener-Home-Assistant-Card",
     getEntitySuggestion:(hass,entityId)=>{
       const s=hass?.states?.[entityId]; if(!s)return null;
       const n=`${s.attributes?.friendly_name||entityId}`.toLowerCase();
